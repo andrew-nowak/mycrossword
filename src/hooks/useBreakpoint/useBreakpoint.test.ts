@@ -68,3 +68,13 @@ test('should handle breakpoint on a boundary', async () => {
   const { result } = renderHook(() => useBreakpoint());
   expect(result.current).toBe('sm');
 });
+
+test('should handle custom breakpoints', async () => {
+  const myBreakpointConfig = [{ name: 'xs' as const, max: 25000 }];
+  act(() => {
+    global.innerWidth = 2000;
+    global.dispatchEvent(new Event('resize'));
+  });
+  const { result } = renderHook(() => useBreakpoint(myBreakpointConfig));
+  expect(result.current).toBe('xs');
+});

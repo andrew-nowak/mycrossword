@@ -9,6 +9,7 @@ import {
   GridError,
   StickyClue,
 } from '../../components';
+import type { Breakpoint } from '../../hooks/useBreakpoint/useBreakpoint';
 import { useBreakpoint, useLocalStorage } from './../../hooks';
 import type {
   GuardianCrossword,
@@ -38,6 +39,7 @@ import { initialiseGuessGrid, validateGuessGrid } from './../../utils/guess';
 
 interface CrosswordProps {
   allowedHtmlTags: string[];
+  breakpoints?: Breakpoint[];
   cellMatcher: RegExp;
   data: GuardianCrossword;
   id: string;
@@ -50,6 +52,7 @@ interface CrosswordProps {
 
 export default function Crossword({
   allowedHtmlTags,
+  breakpoints,
   cellMatcher,
   data,
   id,
@@ -60,7 +63,7 @@ export default function Crossword({
   stickyClue,
 }: CrosswordProps) {
   const dispatch = useAppDispatch();
-  const breakpoint = useBreakpoint();
+  const breakpoint = useBreakpoint(breakpoints);
   const [guessGrid, setGuessGrid] = useLocalStorage<GuessGrid>(
     `crosswords.${id}`,
     initialiseGuessGrid(data.dimensions.cols, data.dimensions.rows),

@@ -1,28 +1,27 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 
-interface Breakpoint {
-  name: string;
-  max: number;
-}
+export type Breakpoint = typeof defaultBreakpoints[number];
 
-const breakpoints: Breakpoint[] = [
-  { name: 'xs', max: 576 },
-  { name: 'sm', max: 768 },
-  { name: 'md', max: 992 },
-  { name: 'lg', max: 1200 },
-  { name: 'xl', max: 1400 },
-  { name: 'xxl', max: 99999 },
+const defaultBreakpoints = [
+  { name: 'xs' as const, max: 576 },
+  { name: 'sm' as const, max: 768 },
+  { name: 'md' as const, max: 992 },
+  { name: 'lg' as const, max: 1200 },
+  { name: 'xl' as const, max: 1400 },
+  { name: 'xxl' as const, max: 99999 },
 ];
 
-export default function useBreakpoint() {
-  const [breakpoint, setBreakPoint] = React.useState<string>();
-  const [windowWidth, setWindowWidth] = React.useState<number>();
+export default function useBreakpoint(customBreakpoints?: Breakpoint[]) {
+  const breakpoints = customBreakpoints ?? defaultBreakpoints;
+
+  const [breakpoint, setBreakPoint] = useState<string>();
+  const [windowWidth, setWindowWidth] = useState<number>();
 
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('resize', handleResize);
     handleResize();
 
